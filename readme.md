@@ -1,4 +1,4 @@
-# alexa-nodejs-test-skill
+# alexa-nodejs-avans-info
 
 Dit is een Alexa skill, waarmee je je eigen teksten door Alexa kunt laten uitspreken.
 
