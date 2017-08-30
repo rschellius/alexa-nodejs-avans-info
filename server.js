@@ -76,33 +76,63 @@ app.intent('chooseTypeOfDrink', {
         var number = request.slot('number');
         if (_.isEmpty(number)) { number = 1; };
 
-        // Did the user mention a drink?
-        var orderedDrink = request.slot('orderedDrink');
-        if (_.isEmpty(orderedDrink)) {
-            response
-                .say(outputMissed)
-                .say(reprompt)
-                .reprompt(reprompt)
-                .shouldEndSession(false);
-            return true;
-        } else {
+        // 
+        // Depending on the state we take an action.
+        //
+        console.log('current state = ' + this.state);
+        switch (this.state) {
+            case INITIAL_STATE:
 
-            // 
-            // The user ordered some drink. Check if it's what we sell.
-            //
-            console.log('chooseTypeOfDrink - orderedDrink = ' + orderedDrink);
-            if (!_.contains(coffees, orderedDrink) || !_.contains(teas, orderedDrink)) {
-                response
-                    .say(errorMsg)
-                    .shouldEndSession(false, "Do you want another number?");
+                // Did the user mention a drink?
+                var orderedDrink = request.slot('orderedDrink');
+                if (_.isEmpty(orderedDrink)) {
+                    response
+                        .say(outputMissed)
+                        .say(reprompt)
+                        .reprompt(reprompt)
+                        .shouldEndSession(false);
+                    return true;
+                } else {
 
-            } else {
+                    // 
+                    // The user ordered some drink. Check if it's what we sell.
+                    //
+                    console.log('chooseTypeOfDrink - orderedDrink = ' + orderedDrink);
+                    if (!_.contains(coffees, orderedDrink) || !_.contains(teas, orderedDrink)) {
+                        console.log('YesIntent - drink is not available');
+                        response
+                            .say(errorMsg)
+                            .shouldEndSession(false, "Do you want another number?");
+                    } else {
+
+                        // We have the correct drink. 
+                        // Adjust the state so that we can ask the next question.
+                        if (request.hasSession()) {
+                            // get the session object
+                            // var 
+                            session = request.getSession();
+                            // set a session variable
+                            // by defailt, Alexa only persists session variables to the next request
+                            // the alexa-app module makes session variables persist across multiple requests
+                            // Note that you *must* use `.set` or `.clear` to update
+                            // session properties. Updating properties of `attributeValue`
+                            // that are objects will not persist until `.set` is called.
+                            session.set('state', ORDER_COFFEE_STATE);
+                        }
+
+                        response
+                            .say('You chose ' + number + orderedDrink)
+                            // .say("You asked for the number " + number + ". ")
+                            .shouldEndSession(false, "Do you want another number?");
+                    }
+                };
+                break;
+            default:
+                console.log('chooseCoffeeOrTea - invalid state');
                 response
-                    .say('You ordered ' + number + orderedDrink)
-                    // .say("You asked for the number " + number + ". ")
-                    .shouldEndSession(false, "Do you want another number?");
-            }
-        }
+                    .say('I am sorry, that request is invalid in this state.')
+                    .shouldEndSession(false, "Do you want to order something?");
+        };
     });
 
 //
