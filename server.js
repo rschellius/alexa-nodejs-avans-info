@@ -20,7 +20,7 @@ var errorMsg = 'Sorry, an error occured.';
 var outputMissed = 'I didn\'t hear a what drink you\'d like.';
 var outputUnavailable = 'I\'m sorry, that drink is unavailable.';
 var outputStop = "Don't you worry. I'll be back.";
-var outputCancel = "No problem. Request cancelled.";
+var outputCancel = "No problem.";
 var outputTypes = "We serve four types of coffee, <s> and five types of tea.<p>";
 var outputCoffees = "We serve regular coffee, <break strength='medium'/>cappuchino, espresso, latte, and americano.<p>";
 var outputTeas = "We serve regular tea, mint, earl grey, jasmine, and gree tea.<p>";
@@ -204,9 +204,10 @@ app.intent('milkOrSugar', {
             var orderedDrink = request.slot('orderedDrink');
             if (_.isEmpty(orderedDrink)) {
                 response
-                    .say("You ordered " + additions + ". <break strength='medium'/><amazon:effect name=\"whispered\">Excellent choice.</amazon:effect>")
+                    .say("You ordered " + additions + ". <break strength='strong'/><amazon:effect name=\"whispered\">Excellent choice.</amazon:effect>")
                     .say(promptCoffeeOrTea)
                     .shouldEndSession(false);
+                state = INITIAL_STATE;
                 return true;
             } else if (orderedDrink === "coffee") {
                 response
@@ -218,6 +219,7 @@ app.intent('milkOrSugar', {
                     .say("You ordered " + additions + " with your " + orderedDrink + ". Good.")
                     .say(promptCoffeeOrTea)
                     .shouldEndSession(false);
+                state = INITIAL_STATE;
             }
         }
         return;
