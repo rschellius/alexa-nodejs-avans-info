@@ -10,7 +10,7 @@ var launchMsg = 'Welcome to the barista skill.';
 var promptIntro = 'I can help you to order coffee or tea. We have several flavors available.';
 var reprompt = 'Would you like to order anything?';
 var promptCoffeeOrTea = 'What would you like?';
-var promptCoffees = 'You can order a cappuchino, a latte, an espresso, a latte machiato, or an american.';
+var promptCoffees = 'You can order a cappuchino, a latte, an espresso, a latte machiato, or an americano.';
 var promptTeas = 'You can order a mint, green tea, jasimine, or earl grey.';
 var promptMilkOrSugar = 'Would you like milk, sugar, or both?';
 var promptHelp = launchMsg + promptIntro + 'We have several coffees. ' +
@@ -21,9 +21,9 @@ var outputMissed = 'I didn\'t hear a what drink you\'d like.';
 var outputUnavailable = 'I\'m sorry, that drink is unavailable.';
 var outputStop = "Don't you worry. I'll be back.";
 var outputCancel = "No problem. Request cancelled.";
-var outputTypes = "We serve four types of coffee, and five types of tea.";
-var outputCoffees = "We serve regular coffee, cappuchino, espresso, latte, and americano.";
-var outputTeas = "We serve regular tea, mint, earl grey, jasmine, and gree tea.";
+var outputTypes = "We serve four types of coffee, <s> and five types of tea.<p>";
+var outputCoffees = "We serve regular coffee, <break strength='medium'/>cappuchino, espresso, latte, and americano.<p>";
+var outputTeas = "We serve regular tea, mint, earl grey, jasmine, and gree tea.<p>";
 
 // State management
 const INITIAL_STATE = 0;
@@ -204,7 +204,7 @@ app.intent('milkOrSugar', {
             var orderedDrink = request.slot('orderedDrink');
             if (_.isEmpty(orderedDrink)) {
                 response
-                    .say("You ordered " + additions + ". Excellent choice.")
+                    .say("You ordered " + additions + ". <break strength='medium'/><amazon:effect name=\"whispered\">Excellent choice.</amazon:effect>")
                     .say(promptCoffeeOrTea)
                     .shouldEndSession(false);
                 return true;
