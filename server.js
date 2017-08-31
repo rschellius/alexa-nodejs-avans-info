@@ -54,7 +54,10 @@ app.launch(function(request, response) {
 //
 app.error = function(exception, request, response) {
     console.log('exception = ' + exception)
-    response.say(errorMsg);
+    response
+        .say(outputMissed)
+        .say(promptCoffeeOrTea)
+        .shouldEndSession(false);
 };
 
 //
