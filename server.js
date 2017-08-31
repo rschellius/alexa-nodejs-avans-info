@@ -12,7 +12,7 @@ var reprompt = 'Would you like to order anything?';
 var promptCoffeeOrTea = 'What would you like?';
 var promptCoffees = 'You can order a cappuchino, a latte, an espresso, a latte machiato, or an american.';
 var promptTeas = 'You can order a mint, green tea, jasimine, or earl grey.';
-var promptMilkOrSugar = 'Would you like milk, sugar or both?';
+var promptMilkOrSugar = 'Would you like milk, sugar, or both?';
 var promptHelp = launchMsg + promptIntro + 'We have several coffees. ' +
     promptCoffees + 'You can also order tea. ' + promptTeas;
 
@@ -200,16 +200,25 @@ app.intent('milkOrSugar', {
                 .say("I'm sorry, I didn't hear your choice.")
                 .say(promptMilkOrSugar)
                 .shouldEndSession(false);
-        } else if (orderedDrink === "coffee") {
-            response
-                .say(outputTypes + outputCoffees)
-                .say(promptCoffeeOrTea)
-                .shouldEndSession(false);
         } else {
-            response
-                .say(outputTypes + outputTeas)
-                .say(promptCoffeeOrTea)
-                .shouldEndSession(false);
+            var orderedDrink = request.slot('orderedDrink');
+            if (_.isEmpty(orderedDrink)) {
+                response
+                    .say("You ordered " + additions + ". Excellent choice.")
+                    .say(promptCoffeeOrTea)
+                    .shouldEndSession(false);
+                return true;
+            } else if (orderedDrink === "coffee") {
+                response
+                    .say("You ordered " + additions + " with your " + orderedDrink + ". Good.")
+                    .say(promptCoffeeOrTea)
+                    .shouldEndSession(false);
+            } else {
+                response
+                    .say("You ordered " + additions + " with your " + orderedDrink + ". Good.")
+                    .say(promptCoffeeOrTea)
+                    .shouldEndSession(false);
+            }
         }
         return;
     });
