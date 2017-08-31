@@ -2,7 +2,7 @@ module.change_code = 1;
 'use strict';
 
 var alexa = require('alexa-app');
-var _ = require('lodash');
+var _ = require('underscore');
 
 var app = new alexa.app('coffee-skill');
 
@@ -57,18 +57,20 @@ app.error = function(exception, request, response) {
 //
 //
 //
+// app.dictionary = { "coffees": coffees };
 app.intent('chooseTypeOfDrink', {
         "slots": {
             "number": "NUMBER",
-            "orderedDrink": "AMAZON.LITERAL"
+            "orderedDrink": "Drinks"
         },
         "utterances": [
             // "say the number {1-100|number}",
             // "give me the number {1-100|number}",
-            // "tell me the number {1-100|number}",
-            // '{|tell|give} {|me} the number {1-100|number}',
-            // '{|I want you to} {|tell|say|give} {|me} the number {1-100|number}',
-            "{I would like} {|a|an} {1-10|number} {|orderedDrink} {|please}"
+            "{1-10|number} {-|orderedDrink}",
+            "{1-10|number} {-|orderedDrink} please",
+            "I would like {1-10|number} {-|orderedDrink}",
+            "I would like {1-10|number} {-|orderedDrink} please",
+            "{could I have|give me|I would like} {a |an |} {-|orderedDrink} {please |}"
         ]
     },
     function(request, response) {
@@ -79,8 +81,8 @@ app.intent('chooseTypeOfDrink', {
         // 
         // Depending on the state we take an action.
         //
-        console.log('current state = ' + this.state);
-        switch (this.state) {
+        console.log('chooseTypeOfDrink - current state = ' + state);
+        switch (state) {
             case INITIAL_STATE:
 
                 // Did the user mention a drink?
@@ -97,9 +99,9 @@ app.intent('chooseTypeOfDrink', {
                     // 
                     // The user ordered some drink. Check if it's what we sell.
                     //
-                    console.log('chooseTypeOfDrink - orderedDrink = ' + orderedDrink);
-                    if (!_.contains(coffees, orderedDrink) || !_.contains(teas, orderedDrink)) {
-                        console.log('YesIntent - drink is not available');
+                    console.log('chooseTypeOfDrink - order = ' + number + ' ' + orderedDrink);
+                    if (!_.contains(coffees, orderedDrink) && !_.contains(teas, orderedDrink)) {
+                        console.log('chooseTypeOfDrink - ' + orderedDrink + ' is not available');
                         response
                             .say(errorMsg)
                             .shouldEndSession(false, "Do you want another number?");
@@ -109,7 +111,6 @@ app.intent('chooseTypeOfDrink', {
                         // Adjust the state so that we can ask the next question.
                         if (request.hasSession()) {
                             // get the session object
-                            // var 
                             session = request.getSession();
                             // set a session variable
                             // by defailt, Alexa only persists session variables to the next request
@@ -141,14 +142,15 @@ app.intent('chooseTypeOfDrink', {
 app.intent('AMAZON.YesIntent', {
         "slots": {},
         "utterances": [
-            '{|okay|yes|allright|yeah|ja|yes please|please}'
+            '{okay|yes|allright|yeah|ja|yes please|please}'
         ]
     },
     function(request, response) {
 
         if (request.hasSession()) {
             session = request.getSession();
-            console.log('YesIntent - session found. Session = ' + session.details);
+            console.log('YesIntent - session found. Session = ');
+            console.dir(session.details);
 
         } else {
             console.log('YesIntent - no session found!');
@@ -176,7 +178,7 @@ app.intent('AMAZON.YesIntent', {
 app.intent('AMAZON.NoIntent', {
         "slots": {},
         "utterances": [
-            '{|no|no thanks|nope}'
+            '{no|no thanks|nope}'
         ]
     },
     function(request, response) {

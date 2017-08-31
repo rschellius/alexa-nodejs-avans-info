@@ -1,29 +1,29 @@
 {
-  "name": "alexa-nodejs-avans-info",
-  "version": "0.0.1",
-  "description": "Alexa skill to provide information about Avans",
-  "main": "server.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node server.js"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/rschellius/alexa-nodejs-avans-info.git"
-  },
-  "keywords": [
-    "Alexa",
-    "nodejs",
-    "skill"
-  ],
-  "author": "Robin Schellius",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/rschellius/alexa-nodejs-avans-info/issues"
-  },
-  "homepage": "https://github.com/rschellius/alexa-nodejs-avans-info#readme",
-  "dependencies": {
-    "alexa-app": "^4.0.1",
-    "lodash": "^4.17.4"
-  }
+    "name": "alexa-nodejs-avans-info",
+    "version": "0.0.1",
+    "description": "Alexa skill to provide information about Avans",
+    "main": "server.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1",
+        "start": "node server.js"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/rschellius/alexa-nodejs-avans-info.git"
+    },
+    "keywords": [
+        "Alexa",
+        "nodejs",
+        "skill"
+    ],
+    "author": "Robin Schellius",
+    "license": "ISC",
+    "bugs": {
+        "url": "https://github.com/rschellius/alexa-nodejs-avans-info/issues"
+    },
+    "homepage": "https://github.com/rschellius/alexa-nodejs-avans-info#readme",
+    "dependencies": {
+        "alexa-app": "^4.0.1",
+        "underscore": "^1.8.3"
+    }
 }
